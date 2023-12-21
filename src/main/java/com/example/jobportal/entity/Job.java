@@ -23,17 +23,6 @@ public class Job {
 	@ManyToOne
 	private Company compMap;
 	
-	@ManyToOne
-	private Job jobMap;
-	
-	
-	public Job getJobMap() {
-		return jobMap;
-	}
-
-	public void setJobMap(Job jobMap) {
-		this.jobMap = jobMap;
-	}
 
 	public int getJobId() {
 		return jobId;

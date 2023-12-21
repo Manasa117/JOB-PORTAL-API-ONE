@@ -1,5 +1,7 @@
 package com.example.jobportal.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -10,6 +12,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.jobportal.entity.Job;
 import com.example.jobportal.enums.BusinessType;
 import com.example.jobportal.exceptionhandling.CompanyNotFoundException;
 import com.example.jobportal.exceptionhandling.IllegalAccssException;
@@ -43,31 +46,38 @@ public class JobController {
 	}
 	
 	
-//	@GetMapping("/jobs/{jobId}")  
-//	public ResponseEntity<ResponseStructure<JobResponseDto>> findJobById(@PathVariable int  jobId) throws JobNotFoundException
-//	{
-//		
-//		 return jobService.findJobById(compId);
-//		
-//	}
-//	
-//	@PutMapping("/jobs/{jobId}")  
-//	public ResponseEntity<ResponseStructure<String>> updateJob(@RequestBody @Valid JobRequestDto jobReq,@PathVariable int compId) throws JobNotFoundException 
-//	{
-//		
-//		 return jobService.updateJob(jobReq,compId);
-//		
-//	}	
-//	
-//	
-//	@DeleteMapping("/jobs/{jobId}")  
-//	public ResponseEntity<ResponseStructure<String>> deleteJobById(@PathVariable int  jobId) throws JobNotFoundException
-//	{
-//		
-//		 return jobService.deleteJobById(jobId);
-//		
-//	}
-//	
+	@GetMapping("/designations/{designation}/jobs")  
+	public ResponseEntity<ResponseStructure<List<JobResponseDto>>> findJobByDesignation(@PathVariable String designation) throws JobNotFoundException
+	{
+		
+		 return jobService.findJob(designation);
+		
+	}
+	
+	
+	
+	@GetMapping("/location/{loc}/jobs")  
+	public ResponseEntity<ResponseStructure<List<JobResponseDto>>> findJobByLocation(@PathVariable String loc) throws JobNotFoundException 
+	{
+		
+		 return jobService.findJObLocation(loc);
+		
+	}	
+	
+	
+	@PutMapping("/jobs/{jobId}")  
+	public ResponseEntity<ResponseStructure<String>> updateJobById(@RequestBody  JobRequestDto jobReq, @PathVariable int  jobId) throws JobNotFoundException
+	{
+		
+		 return jobService.updateJobById(jobReq, jobId);
+		
+	}
+	
 
+	@DeleteMapping("/jobs/{jobId}")
+	public ResponseEntity<ResponseStructure<String>> deleteJob(@PathVariable int jobId) throws JobNotFoundException
+	{
+		return jobService.deleteJOb(jobId);
+	}
 	
 }
