@@ -147,7 +147,7 @@ public class JobService {
 
 	}
 
-	public ResponseEntity<ResponseStructure<String>> updateJobById(@Valid JobRequestDto jobReq, int jobId)
+	public ResponseEntity<ResponseStructure<String>> updateJobById( JobRequestDto jobReq, int jobId)
 			throws JobNotFoundException {
 
 		  Optional<Job> optJob = jobRepo.findById(jobId);
