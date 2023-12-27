@@ -7,7 +7,6 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.FieldError;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -17,16 +16,36 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 
 import com.example.jobportal.utility.ErrorStructure;
 @RestControllerAdvice
-public class ApplicationHandler extends ResponseEntityExceptionHandler {
+public class ApplicationHandler  extends ResponseEntityExceptionHandler{
+
 	
+	
+	
+//	@Override
+//	protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex,
+//			HttpHeaders headers, HttpStatusCode status, WebRequest request) {
+//
+//		List<ObjectError> list = ex.getAllErrors();
+//		HashMap<String, String> hashMap = new HashMap<>();
+//		for (ObjectError error : list) {
+//			FieldError fieldError = (FieldError) error;
+//			String fieldName = fieldError.getField();
+//			String message = fieldError.getDefaultMessage();
+//			hashMap.put(fieldName, message);
+//
+//		}
+//
+//		return new ResponseEntity<Object>(hashMap, HttpStatus.BAD_REQUEST);
+//	}
+
 	@Override
 	protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex,
 			HttpHeaders headers, HttpStatusCode status, WebRequest request) {
-
+		
 		List<ObjectError> list = ex.getAllErrors();
 		HashMap<String, String> hashMap = new HashMap<>();
 		for (ObjectError error : list) {
-			FieldError fieldError = (FieldError) error;
+			 FeildError  fieldError = (FeildError)error;
 			String fieldName = fieldError.getField();
 			String message = fieldError.getDefaultMessage();
 			hashMap.put(fieldName, message);
@@ -34,6 +53,8 @@ public class ApplicationHandler extends ResponseEntityExceptionHandler {
 		}
 
 		return new ResponseEntity<Object>(hashMap, HttpStatus.BAD_REQUEST);
+		
+		
 	}
 
 	@ExceptionHandler(UserNotFoundException.class)
@@ -133,3 +154,5 @@ public class ApplicationHandler extends ResponseEntityExceptionHandler {
 
 	
 }
+
+

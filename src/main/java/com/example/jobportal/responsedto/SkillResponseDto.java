@@ -9,6 +9,7 @@ public class SkillResponseDto {
 
 	private int skillId;
 	private String skillName;
+	
 	private HashMap<String, String> options;
 	
 	

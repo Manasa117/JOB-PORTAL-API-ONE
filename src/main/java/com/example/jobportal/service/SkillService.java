@@ -1,7 +1,7 @@
 package com.example.jobportal.service;
 
 import java.util.ArrayList;
-
+import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 
@@ -18,6 +18,7 @@ import com.example.jobportal.exceptionhandling.SkillNotFoundException;
 import com.example.jobportal.repository.ResumeRepository;
 import com.example.jobportal.repository.SkillRepository;
 import com.example.jobportal.requestdto.SkillRequestDto;
+import com.example.jobportal.responsedto.SkillResponseDto;
 import com.example.jobportal.utility.ResponseStructure;
 
 @Service
@@ -146,12 +147,31 @@ public class SkillService {
 		}else throw new ResumeNotFoundException("resume not present with this id");
 	}
 
-	private List<Skill> removeSkill(Skill skilltoDel, List<Skill> skillMap) {
+	public ResponseEntity<ResponseStructure<SkillResponseDto>> findSkillByName(String skillName) throws SkillNotFoundException {
+	    Skill skill = skillRepo.findSkill(skillName.toLowerCase());  // dont forget to convertt to lower case
+	    
+	  if(skill!=null) {
+		  
+		   HashMap<String,String> hashMap = new HashMap<>();
+		   
+	  SkillResponseDto dto = convertToSkillResponse(skill);
+	  
+	  hashMap.put("Requirement", "requirement to add");
+		  dto.setOptions(hashMap);
+	ResponseStructure<SkillResponseDto> respStruc = new ResponseStructure<>();
+	respStruc.setStatusCode(HttpStatus.FOUND.value());
+	respStruc.setMessage(" Skill data fetched  successfully");
+	respStruc.setData(dto);
+
+	return new ResponseEntity<ResponseStructure<SkillResponseDto>>(respStruc, HttpStatus.FOUND);
+	
+}  else  throw new SkillNotFoundException("skill not present in dataBase");
+
+}
+
+	private SkillResponseDto convertToSkillResponse(Skill skill) {
 		// TODO Auto-generated method stub
-		
-		if(skilltoDel!=null)
-			skillMap.remove(skilltoDel);
-		return skillMap;
+		return null;
 	}
 
 	}

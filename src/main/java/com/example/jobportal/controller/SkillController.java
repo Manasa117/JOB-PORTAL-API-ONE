@@ -3,6 +3,7 @@ package com.example.jobportal.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -13,6 +14,7 @@ import com.example.jobportal.exceptionhandling.ResumeNotFoundException;
 import com.example.jobportal.exceptionhandling.SkillAlreadyExistException;
 import com.example.jobportal.exceptionhandling.SkillNotFoundException;
 import com.example.jobportal.requestdto.SkillRequestDto;
+import com.example.jobportal.responsedto.SkillResponseDto;
 import com.example.jobportal.service.SkillService;
 import com.example.jobportal.utility.ResponseStructure;
 
@@ -43,5 +45,15 @@ public class SkillController {
 			 
 	{
 		return skillService.deleteSkillnResume(resumeId, skill);
+	}
+
+
+	@GetMapping("/skills/{skill}")  
+	public ResponseEntity<ResponseStructure<SkillResponseDto>> findSkillByName(@PathVariable String skill) throws SkillNotFoundException 
+			 
+	{     
+		 
+		 return skillService.findSkillByName(skill);
+		
 	}
 }
