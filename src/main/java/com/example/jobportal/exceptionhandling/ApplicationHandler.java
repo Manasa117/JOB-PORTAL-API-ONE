@@ -7,6 +7,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.FieldError;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -45,7 +46,7 @@ public class ApplicationHandler  extends ResponseEntityExceptionHandler{
 		List<ObjectError> list = ex.getAllErrors();
 		HashMap<String, String> hashMap = new HashMap<>();
 		for (ObjectError error : list) {
-			 FeildError  fieldError = (FeildError)error;
+			 FieldError  fieldError = (FieldError)error;
 			String fieldName = fieldError.getField();
 			String message = fieldError.getDefaultMessage();
 			hashMap.put(fieldName, message);

@@ -147,6 +147,21 @@ public class SkillService {
 		}else throw new ResumeNotFoundException("resume not present with this id");
 	}
 
+	
+	
+	
+	private List<Skill> removeSkill(Skill skilltoDel, List<Skill> skillMap) {
+		
+		if(skilltoDel!=null)
+			skillMap.remove(skilltoDel);
+		return skillMap;
+		
+	}
+
+	
+	
+	
+	
 	public ResponseEntity<ResponseStructure<SkillResponseDto>> findSkillByName(String skillName) throws SkillNotFoundException {
 	    Skill skill = skillRepo.findSkill(skillName.toLowerCase());  // dont forget to convertt to lower case
 	    
@@ -169,10 +184,18 @@ public class SkillService {
 
 }
 
+	
+	
 	private SkillResponseDto convertToSkillResponse(Skill skill) {
-		// TODO Auto-generated method stub
-		return null;
+
+		SkillResponseDto dto = new SkillResponseDto();
+		dto.setSkillId(skill.getSkillId());
+		dto.setSkillName(skill.getSkillname());		
+		
+		return dto;
 	}
+
+	
 
 	}
 	

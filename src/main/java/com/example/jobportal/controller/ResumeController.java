@@ -53,6 +53,9 @@ public class ResumeController {
 	}
 	
 	
+	
+	
+	
 	@PutMapping("/resumes/{resumeId}")
 	public ResponseEntity<ResponseStructure<String>> updateResume(@RequestBody @Valid ResumeRequestDto resumeReq,@PathVariable int resumeId) 
 			throws ResumeNotFoundException 
@@ -70,6 +73,9 @@ public class ResumeController {
 		 return resumeService.deleteResumeById(resumeId);
 		
 	}
+	
+	
+	
 
 }
 

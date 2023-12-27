@@ -5,7 +5,7 @@ import org.springframework.stereotype.Repository;
 
 import com.example.jobportal.entity.Project;
 
-@Repository
+
 public interface ProjectRepository extends JpaRepository<Project, Integer> {
 
 }
