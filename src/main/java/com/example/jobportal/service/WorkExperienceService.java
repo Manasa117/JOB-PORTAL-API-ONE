@@ -33,7 +33,6 @@ public class WorkExperienceService {
 	private ResumeRepository resumRepo;
     @Autowired
     private WorkExperienceRepository workRepo;
-	private WorkExperienceResponseDto convertToWorkDto;
     
     
     
