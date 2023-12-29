@@ -15,4 +15,5 @@ public interface ResumeRepository  extends JpaRepository<Resume, Integer> {
 //	@Query("select r from Resume r where r.skillMap.skillId")
 //	public List<Resume> findresumeBySkillname(int skillId);
 	
+	public List<Resume> findAllBySkillMap(Skill skill);
 }

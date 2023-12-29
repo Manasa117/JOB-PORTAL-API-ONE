@@ -85,7 +85,8 @@ public class ProjectService {
 	}
 
 
-	public ResponseEntity<ResponseStructure<String>> updateProject(ProjectRequestDto proReq, int projectId) throws ProjectNotFoundException {
+	public ResponseEntity<ResponseStructure<String>> updateProject(ProjectRequestDto proReq, int projectId) throws ProjectNotFoundException
+	{
 		
 		Optional<Project> optpro = projectRepo.findById(projectId);
 
