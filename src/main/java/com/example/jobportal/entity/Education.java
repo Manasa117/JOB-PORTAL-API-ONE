@@ -10,6 +10,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
 
 @Entity
 @Component
@@ -27,6 +28,17 @@ public class Education {
 	private LocalDate endDate;
 	private Boolean gradStatus;
 	private float percentageOrCGPA;
+	
+	@ManyToOne
+	private Resume associatedResume;
+	
+	
+	public Resume getAssociatedResume() {
+		return associatedResume;
+	}
+	public void setAssociatedResume(Resume associatedResume) {
+		this.associatedResume = associatedResume;
+	}
 	public int getEduId() {
 		return EduId;
 	}

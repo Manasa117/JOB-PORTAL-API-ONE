@@ -45,7 +45,7 @@ public class ApplicationHandler  extends ResponseEntityExceptionHandler{
 		
 		List<ObjectError> list = ex.getAllErrors();
 		HashMap<String, String> hashMap = new HashMap<>();
-		for (ObjectError error : list) {
+		for (ObjectError error: list) {
 			 FieldError  fieldError = (FieldError)error;
 			String fieldName = fieldError.getField();
 			String message = fieldError.getDefaultMessage();
@@ -154,6 +154,29 @@ public class ApplicationHandler  extends ResponseEntityExceptionHandler{
 	}
 
 	
+	@ExceptionHandler(EducationNotFoundException.class)
+	public ResponseEntity<ErrorStructure<String>> EducationFoundById(EducationNotFoundException cnf) {
+		ErrorStructure<String> es = new ErrorStructure<String>();
+		es.setStatusCode(HttpStatus.NOT_FOUND.value());
+		es.setMessage(cnf.getMess()); // message whate we threw in service
+		es.setErrordata(" education WITH THIS ID NOT PRESENT");
+
+		return new ResponseEntity<ErrorStructure<String>>(es, HttpStatus.NOT_FOUND);
+
+	}
+	
+	
+	
+	@ExceptionHandler(SocialProfileNotFoundException.class)
+	public ResponseEntity<ErrorStructure<String>> EducationFoundById(SocialProfileNotFoundException cnf) {
+		ErrorStructure<String> es = new ErrorStructure<String>();
+		es.setStatusCode(HttpStatus.NOT_FOUND.value());
+		es.setMessage(cnf.getMess()); // message whate we threw in service
+		es.setErrordata(" SOCIALPROFILE WITH THIS ID NOT PRESENT");
+
+		return new ResponseEntity<ErrorStructure<String>>(es, HttpStatus.NOT_FOUND);
+
+	}
 }
 
 
