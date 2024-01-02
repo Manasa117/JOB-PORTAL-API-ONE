@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.jobportal.exceptionhandling.JobNotFoundException;
 import com.example.jobportal.exceptionhandling.ResumeNotFoundException;
 import com.example.jobportal.exceptionhandling.SkillAlreadyExistException;
 import com.example.jobportal.exceptionhandling.SkillNotFoundException;
@@ -29,6 +30,15 @@ public class SkillController {
 			throws SkillAlreadyExistException, ResumeNotFoundException
 	{
 		return skillService.insertSkill(reqskill,resumeId);
+	}
+	
+	
+	
+	@PostMapping("/jobs/{jobId}/skills")
+	public ResponseEntity<ResponseStructure<String>> insertSkillToJob(@PathVariable int jobId, @RequestBody SkillRequestDto reqskill)
+			throws SkillAlreadyExistException, JobNotFoundException, ResumeNotFoundException
+	{
+		return skillService.insertSkillinJob(reqskill,jobId);
 	}
 	
 	

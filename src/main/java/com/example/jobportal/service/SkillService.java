@@ -10,11 +10,14 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import com.example.jobportal.entity.Job;
 import com.example.jobportal.entity.Resume;
 import com.example.jobportal.entity.Skill;
+import com.example.jobportal.exceptionhandling.JobNotFoundException;
 import com.example.jobportal.exceptionhandling.ResumeNotFoundException;
 import com.example.jobportal.exceptionhandling.SkillAlreadyExistException;
 import com.example.jobportal.exceptionhandling.SkillNotFoundException;
+import com.example.jobportal.repository.JobRepository;
 import com.example.jobportal.repository.ResumeRepository;
 import com.example.jobportal.repository.SkillRepository;
 import com.example.jobportal.requestdto.SkillRequestDto;
@@ -29,7 +32,10 @@ public class SkillService {
 	private SkillRepository skillRepo;
     @Autowired
 	private ResumeRepository resumRepo;
-
+    @Autowired
+    private JobRepository jobRepo;
+    
+    
     private Skill CheckSkill(String skill )
     {
     	Skill oldSkill = skillRepo.findSkill(skill.toLowerCase());
@@ -64,19 +70,19 @@ public class SkillService {
     
     
     
-	public ResponseEntity<ResponseStructure<String>> insertSkill(SkillRequestDto skillReq,int resumId) throws ResumeNotFoundException 
+	public ResponseEntity<ResponseStructure<String>> insertSkillinJob(SkillRequestDto skillReq,int jobId) throws JobNotFoundException 
 			 {
 		
-		   Optional<Resume> optResum = resumRepo.findById(resumId);
+		   Optional<Job> optJob = jobRepo.findById(jobId);
 		
-		   if(optResum.isPresent()) {
-			   Resume resume = optResum.get();
+		   if(optJob.isPresent()) {
+			   Job job = optJob.get();
 		                
-			         List<Skill> listSkills = convertToSkill(skillReq,new ArrayList<Skill>());
-			         
-	                   resume.setSkillMap(listSkills);
-	                   resumRepo.save(resume);
-	                   
+			         List<Skill> skillList = job.getSkillList();
+			         if(!skillList.isEmpty()) {
+			        	 convertToSkill(skillReq, skillList);
+			         }
+			         else convertToSkill(skillReq, new ArrayList<Skill>());
 	                   
 				ResponseStructure<String> respStruc = new ResponseStructure<>();
 				respStruc.setStatusCode(HttpStatus.CREATED.value());
@@ -85,12 +91,37 @@ public class SkillService {
 
 				return new ResponseEntity<ResponseStructure<String>>(respStruc, HttpStatus.CREATED);
 				
-		}  else throw new ResumeNotFoundException("resume with given ID is not present");
-		
-		
+		}  else throw new JobNotFoundException("Job with given ID is not present");	
 	}
 	
 	
+	
+	public ResponseEntity<ResponseStructure<String>> insertSkill(SkillRequestDto skillReq,int resumId) throws ResumeNotFoundException 
+	 {
+
+  Optional<Resume> optResum = resumRepo.findById(resumId);
+
+  if(optResum.isPresent()) {
+	   Resume resume = optResum.get();
+               
+	         List<Skill> listSkills = convertToSkill(skillReq,new ArrayList<Skill>());
+	         
+              resume.setSkillMap(listSkills);
+              resumRepo.save(resume);
+              
+              
+		ResponseStructure<String> respStruc = new ResponseStructure<>();
+		respStruc.setStatusCode(HttpStatus.CREATED.value());
+		respStruc.setMessage(" Skill data saved successfully");
+		respStruc.setData("  SKILLLIST ADDED  SUCCESSFULLY");
+
+		return new ResponseEntity<ResponseStructure<String>>(respStruc, HttpStatus.CREATED);
+		
+}  else throw new ResumeNotFoundException("resume with given ID is not present");
+
+
+}
+
 	
 
 	public ResponseEntity<ResponseStructure<String>> updateSkill(SkillRequestDto skillReq,int resumId) throws ResumeNotFoundException 
