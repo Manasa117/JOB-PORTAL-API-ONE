@@ -1,5 +1,7 @@
 package com.example.jobportal.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -50,11 +52,28 @@ public class SkillController {
 	}
 	
 	
-	@DeleteMapping("/resumes/{resumeId}/skill")
+	@PutMapping("/jobs/{jobId}/skill")
+	public ResponseEntity<ResponseStructure<String>> updateSkillInJob(@PathVariable int jobId, @RequestBody SkillRequestDto reqskill)
+			throws   JobNotFoundException
+	{
+		return skillService.updateSkillInJob(reqskill,jobId);
+	}
+	
+	@DeleteMapping("/resumes/{resumeId}/skills/{skill}")
 	public ResponseEntity<ResponseStructure<String>> deleteSkill(@PathVariable int resumeId, @PathVariable String skill) throws ResumeNotFoundException, SkillNotFoundException
 			 
 	{
 		return skillService.deleteSkillnResume(resumeId, skill);
+	}
+
+	
+	
+	@DeleteMapping("/job/{jobId}/skills/{skill}")
+	public ResponseEntity<ResponseStructure<String>> deleteSkillInJob(@PathVariable int jobId, @PathVariable String skill) throws
+	ResumeNotFoundException, SkillNotFoundException, JobNotFoundException
+			 
+	{
+		return skillService.deleteSkillInJob(jobId, skill);
 	}
 
 
@@ -66,4 +85,14 @@ public class SkillController {
 		 return skillService.findSkillByName(skill);
 		
 	}
+	
+	
+	
+	@GetMapping("/job/{jobId}/skills")  
+	public ResponseEntity<ResponseStructure<List<SkillResponseDto>>> findSkillByJob(@PathVariable int jobId) 
+			throws SkillNotFoundException, JobNotFoundException  
+	{     
+		 return skillService.findSkillByJobId(jobId);
+	}
+	
 }

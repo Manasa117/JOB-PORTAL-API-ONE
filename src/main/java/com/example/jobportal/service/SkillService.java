@@ -79,10 +79,16 @@ public class SkillService {
 			   Job job = optJob.get();
 		                
 			         List<Skill> skillList = job.getSkillList();
+			         List<Skill> newSkillList;
 			         if(!skillList.isEmpty()) {
-			        	 convertToSkill(skillReq, skillList);
+			        	 
+			        	 newSkillList = convertToSkill(skillReq, skillList);
 			         }
-			         else convertToSkill(skillReq, new ArrayList<Skill>());
+			         else {
+			        	 newSkillList = convertToSkill(skillReq, new ArrayList<Skill>());
+			         }
+			         job.setSkillList(newSkillList);
+			         jobRepo.save(job);
 	                   
 				ResponseStructure<String> respStruc = new ResponseStructure<>();
 				respStruc.setStatusCode(HttpStatus.CREATED.value());
@@ -150,6 +156,40 @@ public class SkillService {
 
 
 }
+	
+	
+	
+	
+	public ResponseEntity<ResponseStructure<String>> updateSkillInJob(SkillRequestDto skillReq,int jobId) 
+			throws  JobNotFoundException 
+	 {
+
+ Optional<Job> optJob = jobRepo.findById(jobId);
+
+ if(optJob.isPresent()) {
+	   Job job = optJob.get();
+              
+	          List<Skill> updSkillList = convertToSkill(skillReq,job.getSkillList());
+	          
+	         
+             job.setSkillList(updSkillList);
+             jobRepo.save(job);
+             
+             
+		ResponseStructure<String> respStruc = new ResponseStructure<>();
+		respStruc.setStatusCode(HttpStatus.ACCEPTED.value());
+		respStruc.setMessage(" Skill data updated successfully");
+		respStruc.setData("  SKILL LIST  UPDATED IN JOB SUCCESSFULLY");
+
+		return new ResponseEntity<ResponseStructure<String>>(respStruc, HttpStatus.ACCEPTED);
+		
+}  else throw new JobNotFoundException("job with given id not present");
+
+
+}
+
+	
+	
 
 	public ResponseEntity<ResponseStructure<String>> deleteSkillnResume(int resumeId, String skill) throws ResumeNotFoundException, SkillNotFoundException {
 	
@@ -176,6 +216,38 @@ public class SkillService {
 
 
 		}else throw new ResumeNotFoundException("resume not present with this id");
+	}
+
+	
+	
+	
+public ResponseEntity<ResponseStructure<String>> deleteSkillInJob(int jobId, String skill) 
+		throws ResumeNotFoundException, JobNotFoundException, SkillNotFoundException {
+	
+		
+		Optional<Job> optJob = jobRepo.findById(jobId);
+		if(optJob.isPresent()) {
+			Job job = optJob.get();
+			
+			Skill skilltoDel = skillRepo.findSkill(skill.toLowerCase());
+			if(skilltoDel!=null) {
+				
+				List<Skill> updatedList = removeSkill(skilltoDel,job.getSkillList());
+				
+				job.setSkillList(updatedList);
+				jobRepo.save(job);
+				
+				ResponseStructure<String> respStruc = new ResponseStructure<>();
+				respStruc.setStatusCode(HttpStatus.ACCEPTED.value());
+				respStruc.setMessage(" Skill data remove successfully");
+				respStruc.setData("  SKILL DELETED FROM LIST SUCCESSFULLY");
+
+				return new ResponseEntity<ResponseStructure<String>>(respStruc, HttpStatus.CREATED);
+				
+		}  else throw new SkillNotFoundException("skill with given id not present");
+
+
+		}else throw new JobNotFoundException("job not present with this id");
 	}
 
 	
@@ -215,6 +287,43 @@ public class SkillService {
 
 }
 
+	public ResponseEntity<ResponseStructure<List<SkillResponseDto>>> findSkillByJobId(int jobId) 
+			throws SkillNotFoundException, JobNotFoundException {
+
+		Optional<Job> optJob = jobRepo.findById(jobId);
+	  if(optJob.isPresent()) {
+		  Job job =optJob.get();
+		  
+		  List<Skill> listSkill = job.getSkillList();
+		  
+		  if(!listSkill.isEmpty()) {
+		  List<SkillResponseDto> respList = new ArrayList<>();
+		  
+		  for(Skill sk : listSkill) {
+		   HashMap<String,String> hashMap = new HashMap<>();
+		   
+	  SkillResponseDto dto = convertToSkillResponse(sk);
+	  
+	  
+	  
+	  hashMap.put("Requirement", "requirement");
+		  dto.setOptions(hashMap);
+		  respList.add(dto);
+		  }
+		  
+	ResponseStructure<List<SkillResponseDto>> respStruc = new ResponseStructure<>();
+	respStruc.setStatusCode(HttpStatus.FOUND.value());
+	respStruc.setMessage(" Skill data fetched  successfully");
+	respStruc.setData(respList);
+
+	return new ResponseEntity<ResponseStructure<List<SkillResponseDto>>>(respStruc, HttpStatus.FOUND);
+		  
+		  
+}  else  throw new SkillNotFoundException("skill in job not present ");
+	}
+	else throw new JobNotFoundException("JOb not present in database");
+}	
+	
 	
 	
 	private SkillResponseDto convertToSkillResponse(Skill skill) {
