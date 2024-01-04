@@ -12,7 +12,7 @@ import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 
 @Entity
-@Component
+@Component			
 public class Job {
 	
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,6 +22,8 @@ public class Job {
 	private String jobRole;
 	private String location;
 	private double ctc;
+	private boolean openStatus;
+	
 	
 	@ManyToOne
 	private Company compMap;
@@ -29,6 +31,15 @@ public class Job {
 	@ManyToMany
 	private List<Skill> skillList;
 	
+	
+
+	public boolean getOpenStatus() {
+		return openStatus;
+	}
+
+	public void setOpenStatus(boolean openStatus) {
+		this.openStatus = openStatus;
+	}
 
 	public List<Skill> getSkillList() {
 		return skillList;

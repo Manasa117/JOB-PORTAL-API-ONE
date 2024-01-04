@@ -2,7 +2,6 @@ package com.example.jobportal.entity;
 
 import java.util.List;
 
-import org.hibernate.annotations.ManyToAny;
 import org.springframework.stereotype.Component;
 
 import jakarta.persistence.Entity;

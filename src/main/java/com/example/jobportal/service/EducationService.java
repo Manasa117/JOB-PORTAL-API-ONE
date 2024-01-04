@@ -97,6 +97,7 @@ public class EducationService {
 			 }
 		
              }
+             
             
              education.setEduType(eduType);
              if(eduType==EducationType.SSLC) { education.setDegreeType(null); education.setStream(null);}

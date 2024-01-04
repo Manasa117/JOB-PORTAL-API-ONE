@@ -177,6 +177,20 @@ public class ApplicationHandler  extends ResponseEntityExceptionHandler{
 		return new ResponseEntity<ErrorStructure<String>>(es, HttpStatus.NOT_FOUND);
 
 	}
+	
+	
+	
+
+	@ExceptionHandler(JobApplicationNotFoundException.class)
+	public ResponseEntity<ErrorStructure<String>> jobApplicationFoundById( JobApplicationNotFoundException cnf) {
+		ErrorStructure<String> es = new ErrorStructure<String>();
+		es.setStatusCode(HttpStatus.NOT_FOUND.value());
+		es.setMessage(cnf.getMess()); // message whate we threw in service
+		es.setErrordata("  JobApplication WITH THIS ID NOT PRESENT");
+
+		return new ResponseEntity<ErrorStructure<String>>(es, HttpStatus.NOT_FOUND);
+
+	}
 }
 
 

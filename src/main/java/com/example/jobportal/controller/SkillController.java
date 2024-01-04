@@ -90,8 +90,8 @@ public class SkillController {
 	
 	@GetMapping("/job/{jobId}/skills")  
 	public ResponseEntity<ResponseStructure<List<SkillResponseDto>>> findSkillByJob(@PathVariable int jobId) 
-			throws SkillNotFoundException, JobNotFoundException  
-	{     
+			throws SkillNotFoundException, JobNotFoundException 
+    { 
 		 return skillService.findSkillByJobId(jobId);
 	}
 	
